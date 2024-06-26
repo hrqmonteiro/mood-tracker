@@ -2,6 +2,18 @@
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
 
+:root {
+  --white: #ffffff;
+  --lavender-100: #f1f5fe;
+  --lavender-300: #8582dd;
+  --midnight-100: #f5f6f4;
+  --midnight-200: #c6c5c5;
+  --midnight-300: #6c757d;
+  --midnight-400: #2e2f39;
+  --lavender-200: #c2c0f9;
+  --lavender-200-opacity: #c2c0fa7f;
+}
+
 * {
   box-sizing: border-box;
   padding: 0;
@@ -12,6 +24,15 @@ html,
 body {
   max-width: 100vw;
   overflow-x: hidden;
+}
+
+main {
+  min-height: 100svh;
+  display: grid;
+  grid-template-columns: 1fr 368px;
+  grid-template-rows: 1fr;
+  grid-column-gap: 0px;
+  grid-row-gap: 0px;
 }
 
 a {
