@@ -1,0 +1,71 @@
+.modal {
+  @apply pointer-events-none fixed inset-0 z-50 flex items-center justify-center opacity-0 duration-300 ease-in-out;
+}
+
+.modal--open {
+  @apply pointer-events-auto opacity-100;
+}
+
+.modal__curtain {
+  @apply fixed inset-0 z-10 cursor-pointer bg-black/60 duration-300 ease-in-out;
+}
+
+.modal--open .modal__container {
+  @apply top-0;
+}
+
+.modal__container {
+  @apply w-90 rounded-large relative top-12 z-50 flex max-w-4xl flex-col bg-lavender-100 p-12 duration-300 ease-in-out;
+
+  @media screen and (max-width: 600px) {
+    padding: 1.5rem;
+  }
+}
+
+.modal__head {
+  @apply mb-8 flex flex-row-reverse;
+}
+
+.modal__close_button {
+  @apply rounded-full bg-transparent p-2 transition duration-300 ease-in-out hover:bg-black hover:bg-opacity-30;
+  border: none;
+  cursor: pointer;
+}
+
+.modal__close_button svg {
+  @apply h-6 w-6; /* Adjust width and height based on your SVG size */
+}
+
+.heading {
+  @apply mb-16 text-center text-5xl font-extrabold leading-normal tracking-normal text-midnight-400;
+}
+
+@media screen and (max-width: 600px) {
+  .heading {
+    @apply text-2xl;
+  }
+}
+
+.options {
+  @apply grid grid-cols-3 gap-x-4; /* Adjust gap-x based on your requirement */
+}
+
+.options:hover .mood {
+  @apply opacity-75;
+}
+
+.mood {
+  @apply rounded-large flex cursor-pointer flex-col items-center justify-center gap-6 border-2 border-transparent bg-white p-6 text-2xl font-bold text-midnight-400 transition-all duration-300;
+
+  height: 15.125rem; /* Retain the height from your original */
+}
+
+@media screen and (max-width: 600px) {
+  .mood {
+    @apply p-4 text-base;
+  }
+}
+
+.options:hover .mood:hover {
+  @apply scale-105 border-lavender-300 opacity-100;
+}
