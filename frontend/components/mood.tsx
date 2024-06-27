@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useSearchParams } from 'next/navigation'
+import { moodsAvailable } from '@/utils/constants'
+import type { MoodKey } from '@/utils/types'
 import { Player } from '@lottiefiles/react-lottie-player'
 import clsx from 'clsx'
 
@@ -11,39 +13,16 @@ import BackgroundSad from '@/components/backgrounds/background-sad'
 import BackgroundFallback from './backgrounds/background-fallback'
 import styles from './mood.module.css'
 
-const moodsAvailable: Record<string, { title: string; message: string }> = {
-  pleasant: {
-    title: 'You’re feeling pleasant',
-    message:
-      'Feeling on top of the world, are we? Must be all those endorphins doing their happy dance!'
-  },
-  excited: {
-    title: 'You’re feeling excited',
-    message:
-      "Buckle up, buttercup! Someone's got an extra sparkle in their step today!"
-  },
-  sad: {
-    title: 'You’re feeling sad',
-    message:
-      'Got the blues, huh? Remember, even clouds have silver linings. We’re here for you.'
-  },
-  notFound: {
-    title: 'No record found',
-    message:
-      'No record of Mood Trackings found. Choose your current mood on the sidebar and start!'
-  }
-}
-
 export default function Mood() {
   const searchParams = useSearchParams()
-  const mood = searchParams.get('mood') as string | null
-  const [latestMoodState, setLatestMoodState] = useState<string | null>(null)
+  const mood = searchParams.get('mood') as MoodKey | null
+  const [latestMoodState, setLatestMoodState] = useState<MoodKey | null>(null)
   const { moodStates, loading, error } = useMoodStates()
   const userMood = mood || latestMoodState
 
   useEffect(() => {
     if (!loading && !error && moodStates.length > 0) {
-      const latestMood = moodStates[0].type.toLowerCase()
+      const latestMood = moodStates[0].type.toLowerCase() as MoodKey
       setLatestMoodState(latestMood)
     }
   }, [moodStates, loading, error])
@@ -56,16 +35,19 @@ export default function Mood() {
     }
   }, [moodStates, showFallback])
 
-  const currentMood = userMood ? moodsAvailable[userMood] : undefined
+  let currentMood = null
+  if (userMood && Object.keys(moodsAvailable).includes(userMood)) {
+    currentMood = moodsAvailable[userMood]
+  }
 
   return (
     <div className={clsx(styles.mood, userMood && styles[userMood])}>
       <div className={styles.foreground}>
-        {userMood && (
+        {userMood && currentMood && (
           <div className={styles.content}>
             <p className={styles.eyebrow}>Current Mood</p>
-            <p className={styles.title}>{currentMood?.title}</p>
-            <p className={styles.message}>{currentMood?.message}</p>
+            <p className={styles.title}>{currentMood.title}</p>
+            <p className={styles.message}>{currentMood.message}</p>
           </div>
         )}
         <div className={styles.video}>

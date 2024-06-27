@@ -7,7 +7,7 @@ export const API: AxiosInstance = axios.create({
 })
 
 axios.interceptors.response.use(
-  (response: AxiosResponse<any, any>) => {
+  (response: AxiosResponse) => {
     return response
   },
   (error) => {

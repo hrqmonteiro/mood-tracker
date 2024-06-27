@@ -12,14 +12,12 @@ import styles from './modal.module.css'
 
 type ModalProps = {
   showModal?: boolean
-  updateMood: (mood: string) => void
   closeModal: () => void
   createMoodState: (type: 'PLEASANT' | 'EXCITED' | 'SAD') => Promise<void>
 }
 
 export default function Modal({
   showModal = false,
-  updateMood,
   closeModal,
   createMoodState
 }: ModalProps) {
@@ -57,7 +55,6 @@ export default function Modal({
     <div className={clsx(styles.modal, { [styles['modal--open']]: showModal })}>
       <div className={styles['modal__curtain']} onClick={closeModal} />
       <div className={styles['modal__container']}>
-        {/* Head Controls */}
         <div className={styles['modal__head']}>
           <button
             className={styles['modal__close_button']}

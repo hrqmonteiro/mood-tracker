@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
-import { useRouter } from 'next/navigation'
+import type { MoodData } from '@/utils/types'
 import { Toaster } from 'react-hot-toast'
 
 import useMoodStates from '@/hooks/useMoodStates'
@@ -9,15 +9,9 @@ import Modal from '@/components/modal'
 import Mood from '@/components/mood'
 import Sidebar from '@/components/sidebar'
 
-type MoodData = {
-  mood: string
-  date: Date
-}
-
 export default function Home() {
   const [moodList, setMoodList] = useState<MoodData[]>([])
   const [showModal, setShowModal] = useState(false)
-  const router = useRouter()
   const scrollToRef = useRef<HTMLDivElement>(null)
   const { moodStates, createMoodState } = useMoodStates()
 
@@ -31,22 +25,11 @@ export default function Home() {
     }
   }, [moodStates])
 
-  const updateMood = (newMood: string) => {
-    const date = new Date()
-    setMoodList((currentMood) => [...currentMood, { mood: newMood, date }])
-    router.push(`/?mood=${newMood}`)
-    setShowModal(false)
-    if (scrollToRef.current) {
-      scrollToRef.current.scrollIntoView({ behavior: 'smooth' })
-    }
-  }
-
   return (
     <main>
       <Toaster />
       <Modal
         showModal={showModal}
-        updateMood={updateMood}
         closeModal={() => setShowModal(false)}
         createMoodState={createMoodState}
       />

@@ -1,8 +1,19 @@
 import { useEffect, useState } from 'react'
 import { API } from '@/services/api'
 
+type MoodState = {
+  id: string
+  type: string
+  createdAt: string
+  updatedAt: string
+}
+
+type MoodStates = {
+  data: MoodState[]
+}
+
 export default function useMoodStates() {
-  const [moodStates, setMoodStates] = useState<any[]>([])
+  const [moodStates, setMoodStates] = useState<MoodState[]>([])
   const [loading, setLoading] = useState<boolean>(true)
   const [error, setError] = useState<string | null>(null)
 
@@ -12,15 +23,20 @@ export default function useMoodStates() {
 
   const fetchMoodStates = async () => {
     try {
-      const response = await API.get('/api/v1/mood-states')
+      const response: MoodStates = await API.get('/api/v1/mood-states')
+
       const sortedMoodStates = response.data.sort(
-        (a: any, b: any) =>
+        (a: MoodState, b: MoodState) =>
           new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
       )
       setMoodStates(sortedMoodStates)
       setLoading(false)
-    } catch (error) {
-      setError(error.message)
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        setError(error.message)
+      } else {
+        setError('An unknown error occurred')
+      }
       setLoading(false)
     }
   }

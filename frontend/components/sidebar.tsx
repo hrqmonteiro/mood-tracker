@@ -1,16 +1,12 @@
 import { useState } from 'react'
 import { usePathname, useRouter } from 'next/navigation'
-import { format } from 'date-fns'
+import { todayDate } from '@/utils/constants'
+import type { MoodItem } from '@/utils/types'
 
 import useQueryString from '@/hooks/useQueryString'
 
 import MoodPreview from './mood-preview'
 import styles from './sidebar.module.css'
-
-type MoodItem = {
-  mood: string
-  date: Date | string
-}
 
 type SidebarProps = {
   moodList: MoodItem[]
@@ -33,8 +29,6 @@ export default function Sidebar({
     setSelectedMood(newMood)
     router.push(pathname + '?' + createQueryString('mood', newMood))
   }
-
-  const todayDate = format(new Date(), 'yyyy-MM-dd')
 
   const defaultMoodPreview = (
     <MoodPreview

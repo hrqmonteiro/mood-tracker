@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { useRef } from 'react'
 import { Controls, Player } from '@lottiefiles/react-lottie-player'
 
 import styles from './sidebar.module.css'
@@ -10,6 +10,7 @@ interface MoodPreviewProps {
   mood: string
   date: Date | string
   updateSelectedMood: (newMood: string) => void
+  isSelected: boolean
 }
 
 export default function MoodPreview({
@@ -17,7 +18,7 @@ export default function MoodPreview({
   date,
   updateSelectedMood
 }: MoodPreviewProps) {
-  const videoplayer = useRef(null)
+  const videoplayer = useRef<Player>(null)
 
   let localizedDate: string | null = null
   if (date instanceof Date && !isNaN(date.getTime())) {
