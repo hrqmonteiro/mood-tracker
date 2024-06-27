@@ -4,6 +4,8 @@ import { useRef, useState } from 'react'
 import { useRouter } from 'next/navigation'
 
 import Modal from '@/components/modal'
+import Mood from '@/components/mood'
+import Sidebar from '@/components/sidebar'
 
 interface MoodData {
   mood: string
@@ -115,6 +117,10 @@ export default function Home() {
         updateMood={updateMood}
         closeModal={() => setShowModal(false)}
       />
+      <Mood />
+      <Sidebar moodList={moodList} setShowModal={setShowModal}>
+        <div ref={scrollToRef} />
+      </Sidebar>
     </main>
   )
 }
