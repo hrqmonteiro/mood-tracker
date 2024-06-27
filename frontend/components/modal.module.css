@@ -33,7 +33,7 @@
 }
 
 .modal__close_button svg {
-  @apply h-6 w-6; /* Adjust width and height based on your SVG size */
+  @apply h-6 w-6;
 }
 
 .heading {
@@ -47,7 +47,7 @@
 }
 
 .options {
-  @apply grid grid-cols-3 gap-x-4; /* Adjust gap-x based on your requirement */
+  @apply grid grid-cols-3 gap-x-4;
 }
 
 .options:hover .mood {
@@ -57,7 +57,7 @@
 .mood {
   @apply rounded-large flex cursor-pointer flex-col items-center justify-center gap-6 border-2 border-transparent bg-white p-6 text-2xl font-bold text-midnight-400 transition-all duration-300;
 
-  height: 15.125rem; /* Retain the height from your original */
+  height: 15.125rem;
 }
 
 @media screen and (max-width: 600px) {
