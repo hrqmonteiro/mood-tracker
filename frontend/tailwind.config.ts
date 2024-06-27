@@ -8,7 +8,8 @@ export default {
   theme: {
     extend: {
       borderRadius: {
-        large: '32px'
+        large: '32px',
+        big: '2.5rem'
       },
       colors: {
         white: '#ffffff',
@@ -25,8 +26,17 @@ export default {
           400: '#2e2f39'
         }
       },
+      fontSize: {
+        '1.5xl': '1.375rem'
+      },
       spacing: {
-        '90': '90vw'
+        '90': '90vw',
+        '300px': '300px',
+        '10vh': '10vh',
+        '100vh': '100vh'
+      },
+      transitionDuration: {
+        '2000': '2000ms'
       }
     }
   },
