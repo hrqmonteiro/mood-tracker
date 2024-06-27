@@ -9,9 +9,11 @@ import { errorHandler } from "./middlewares/error";
 import { notFound } from "./middlewares/not-found";
 import moodStates from "./routes/mood-states";
 
+import swagger from "./routes/swagger";
+
 const { API_VERSION, PORT } = env;
 
-const app = new Hono().basePath(`/api/${API_VERSION}`);
+const app = new Hono();
 const port = PORT || 8000;
 
 app.use("*", logger(), prettyJSON());
@@ -24,10 +26,11 @@ app.use(
   })
 );
 
-app.route("/mood-states", moodStates);
+app.route("/", swagger);
+
+app.route(`/api/${API_VERSION}/mood-states`, moodStates);
 
 app.onError((err, c: Context) => {
-  console.log("the err", err);
   const error = errorHandler(c);
 
   return error;
