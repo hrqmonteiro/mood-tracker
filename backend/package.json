@@ -1,5 +1,8 @@
 {
   "name": "backend",
+  "engines": {
+    "node": ">=18.18.2"
+  },
   "scripts": {
     "db:generate": "prisma generate",
     "db:migrate": "prisma migrate dev",
