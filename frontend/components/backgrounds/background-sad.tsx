@@ -1,9 +1,9 @@
 'use client'
 
+import type { BackgroundProps } from '@/utils/types'
 import clsx from 'clsx'
 
 import styles from './backgrounds.module.css'
-import type { BackgroundProps } from './types'
 
 export default function BackgroundSad({ isActive = false }: BackgroundProps) {
   return (
