@@ -54,6 +54,12 @@ pnpm build
 pnpm start
 ```
 
+<br>
+
+![alt text](image-1.png)
+
+<br>
+
 ### Backend
 
 - Installing dependencies and running locally (development mode)
@@ -69,10 +75,25 @@ pnpm dev
 pnpm start
 ```
 
+#### Swagger (OpenAPI) Docs:
+
+- After running backend, open:
+
+```
+http://localhost:8000/api
+```
+
+<br>
+
+![alt text](image.png)
+
+<br>
+
 ### Docker compose
 
 Run the `docker-compose.yml` file:
 
 ```
 docker compose up -d
+docker exec mood-tracker-backend npx prisma migrate dev // run the migrations os prisma in case network missed
 ```
