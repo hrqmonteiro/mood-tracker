@@ -1,9 +1,9 @@
-'use client'
-
+import { useEffect, useState } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { Player } from '@lottiefiles/react-lottie-player'
 import clsx from 'clsx'
 
+import useMoodStates from '@/hooks/useMoodStates'
 import BackgroundExcited from '@/components/backgrounds/background-excited'
 import BackgroundPleasant from '@/components/backgrounds/background-pleasant'
 import BackgroundSad from '@/components/backgrounds/background-sad'
@@ -31,11 +31,27 @@ const moodsAvailable: Record<string, { title: string; message: string }> = {
 
 export default function Mood() {
   const searchParams = useSearchParams()
-  const mood = searchParams.get('mood')
-  const userMood = mood as string
+  const mood = searchParams.get('mood') as string | null
+  const [latestMoodState, setLatestMoodState] = useState<string | null>(null)
+  const { moodStates, loading, error } = useMoodStates()
+
+  useEffect(() => {
+    if (!loading && !error && moodStates.length > 0) {
+      const latestMood = moodStates[0].type.toLowerCase()
+      setLatestMoodState(latestMood)
+    }
+  }, [moodStates, loading, error])
+
+  if (!mood && !latestMoodState) {
+    return <Fallback />
+  }
+
+  const userMood = mood || latestMoodState
   const isValidMood = Object.keys(moodsAvailable).includes(userMood)
 
-  if (!isValidMood) return <Fallback />
+  if (!isValidMood) {
+    return <Fallback />
+  }
 
   const currentMood = moodsAvailable[userMood]
 

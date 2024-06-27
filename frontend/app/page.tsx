@@ -1,8 +1,9 @@
 'use client'
 
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useRouter } from 'next/navigation'
 
+import useMoodStates from '@/hooks/useMoodStates'
 import Modal from '@/components/modal'
 import Mood from '@/components/mood'
 import Sidebar from '@/components/sidebar'
@@ -13,92 +14,21 @@ interface MoodData {
 }
 
 export default function Home() {
-  const [moodList, setMoodList] = useState<MoodData[]>([
-    {
-      mood: 'pleasant',
-      date: '2023-11-01T21:10:13.806Z'
-    },
-    {
-      mood: 'excited',
-      date: '2023-11-01T21:10:15.602Z'
-    },
-    {
-      mood: 'sad',
-      date: '2023-11-01T21:10:17.097Z'
-    },
-    {
-      mood: 'excited',
-      date: '2023-11-01T21:10:18.673Z'
-    },
-    {
-      mood: 'sad',
-      date: '2023-11-01T21:10:20.001Z'
-    },
-    {
-      mood: 'pleasant',
-      date: '2023-11-01T21:10:21.721Z'
-    },
-    {
-      mood: 'excited',
-      date: '2023-11-01T21:10:23.848Z'
-    },
-    {
-      mood: 'sad',
-      date: '2023-11-01T21:10:25.134Z'
-    },
-    {
-      mood: 'pleasant',
-      date: '2023-11-01T21:10:26.492Z'
-    },
-    {
-      mood: 'excited',
-      date: '2023-11-01T21:10:27.618Z'
-    },
-    {
-      mood: 'sad',
-      date: '2023-11-01T21:10:28.652Z'
-    },
-    {
-      mood: 'pleasant',
-      date: '2023-11-01T21:10:29.832Z'
-    },
-    {
-      mood: 'excited',
-      date: '2023-11-01T21:10:31.175Z'
-    },
-    {
-      mood: 'sad',
-      date: '2023-11-01T21:10:32.475Z'
-    },
-    {
-      mood: 'pleasant',
-      date: '2023-11-01T21:10:33.673Z'
-    },
-    {
-      mood: 'pleasant',
-      date: '2023-11-01T21:10:37.347Z'
-    },
-    {
-      mood: 'excited',
-      date: '2023-11-01T21:10:38.868Z'
-    },
-    {
-      mood: 'sad',
-      date: '2023-11-01T21:10:40.804Z'
-    },
-    {
-      mood: 'excited',
-      date: '2023-11-01T21:10:42.535Z'
-    },
-    {
-      mood: 'pleasant',
-      date: '2023-11-01T21:10:44.098Z'
-    }
-  ])
-
+  const [moodList, setMoodList] = useState<MoodData[]>([])
   const [showModal, setShowModal] = useState(false)
   const router = useRouter()
   const scrollToRef = useRef<HTMLDivElement>(null)
+  const { moodStates, loading, error } = useMoodStates()
+
+  useEffect(() => {
+    if (moodStates.length > 0) {
+      const updatedMoodList = moodStates.map((state) => ({
+        mood: state.type.toLowerCase(),
+        date: state.createdAt
+      }))
+      setMoodList(updatedMoodList)
+    }
+  }, [moodStates])
 
   const updateMood = (newMood: string) => {
     const date = new Date().toISOString()
