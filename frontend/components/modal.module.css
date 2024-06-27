@@ -1,5 +1,5 @@
 .modal {
-  @apply z-100 pointer-events-none fixed inset-0 flex items-center justify-center opacity-0 duration-300 ease-in-out;
+  @apply pointer-events-none fixed inset-0 z-100 flex items-center justify-center opacity-0 duration-300 ease-in-out;
 }
 
 .modal--open {
@@ -15,7 +15,7 @@
 }
 
 .modal__container {
-  @apply w-90 rounded-large z-100 relative top-12 flex max-w-4xl flex-col bg-lavender-100 p-12 duration-300 ease-in-out;
+  @apply relative top-12 z-100 flex w-90 max-w-4xl flex-col rounded-large bg-lavender-100 p-12 duration-300 ease-in-out;
 
   @media screen and (max-width: 600px) {
     padding: 1.5rem;
@@ -55,9 +55,15 @@
 }
 
 .mood {
-  @apply rounded-large flex cursor-pointer flex-col items-center justify-center gap-6 border-2 border-transparent bg-white p-6 text-2xl font-bold text-midnight-400 transition-all duration-300;
+  @apply flex cursor-pointer flex-col items-center justify-center gap-6 rounded-large border-2 border-transparent bg-white p-6 text-2xl font-bold text-midnight-400 transition-all duration-300;
 
   height: 15.125rem;
+}
+
+.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  filter: grayscale(100%);
 }
 
 @media screen and (max-width: 600px) {

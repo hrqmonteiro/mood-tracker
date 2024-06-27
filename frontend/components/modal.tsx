@@ -1,7 +1,12 @@
 'use client'
 
+import { useState } from 'react'
 import Image from 'next/image'
+import { usePathname, useRouter } from 'next/navigation'
 import clsx from 'clsx'
+import toast from 'react-hot-toast'
+
+import useQueryString from '@/hooks/useQueryString'
 
 import styles from './modal.module.css'
 
@@ -9,13 +14,45 @@ type ModalProps = {
   showModal?: boolean
   updateMood: (mood: string) => void
   closeModal: () => void
+  createMoodState: (type: 'PLEASANT' | 'EXCITED' | 'SAD') => Promise<void>
 }
 
 export default function Modal({
   showModal = false,
   updateMood,
-  closeModal
+  closeModal,
+  createMoodState
 }: ModalProps) {
+  const [loading, setLoading] = useState<boolean>(false)
+  const router = useRouter()
+  const pathname = usePathname()
+  const { createQueryString } = useQueryString()
+
+  const handleMoodClick = async (type: 'PLEASANT' | 'EXCITED' | 'SAD') => {
+    try {
+      setLoading(true)
+
+      const loadingToastId = toast.loading('Creating mood state...')
+
+      await new Promise((resolve) => setTimeout(resolve, 1000))
+
+      await createMoodState(type)
+
+      router.push(
+        pathname + '?' + createQueryString('mood', type.toLocaleLowerCase())
+      )
+
+      toast.success('Mood state created successfully!', { id: loadingToastId })
+
+      closeModal()
+    } catch (error) {
+      toast.error('Failed to create mood state', { duration: 4000 })
+      console.error('Failed to create mood state', error)
+    } finally {
+      setLoading(false)
+    }
+  }
+
   return (
     <div className={clsx(styles.modal, { [styles['modal--open']]: showModal })}>
       <div className={styles['modal__curtain']} onClick={closeModal} />
@@ -42,14 +79,15 @@ export default function Modal({
             </svg>
           </button>
         </div>
-        {/* Title */}
+
         <h2 className={styles.heading}>What mood are you in today?</h2>
-        {/* Mood Options */}
+
         <div className={styles.options}>
           <button
-            className={styles.mood}
-            onClick={() => updateMood('pleasant')}
+            className={clsx(styles.mood, { [styles.disabled]: loading })}
+            onClick={() => handleMoodClick('PLEASANT')}
             type='button'
+            disabled={loading}
           >
             <Image
               src='/assets/pleasant.png'
@@ -60,9 +98,10 @@ export default function Modal({
             <span>Pleasant</span>
           </button>
           <button
-            className={styles.mood}
-            onClick={() => updateMood('excited')}
+            className={clsx(styles.mood, { [styles.disabled]: loading })}
+            onClick={() => handleMoodClick('EXCITED')}
             type='button'
+            disabled={loading}
           >
             <Image
               src='/assets/excited.png'
@@ -73,9 +112,10 @@ export default function Modal({
             <span>Excited</span>
           </button>
           <button
-            className={styles.mood}
-            onClick={() => updateMood('sad')}
+            className={clsx(styles.mood, { [styles.disabled]: loading })}
+            onClick={() => handleMoodClick('SAD')}
             type='button'
+            disabled={loading}
           >
             <Image
               src='/assets/sad.png'

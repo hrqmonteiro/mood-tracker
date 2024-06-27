@@ -2,15 +2,16 @@
 
 import { useEffect, useRef, useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { Toaster } from 'react-hot-toast'
 
 import useMoodStates from '@/hooks/useMoodStates'
 import Modal from '@/components/modal'
 import Mood from '@/components/mood'
 import Sidebar from '@/components/sidebar'
 
-interface MoodData {
+type MoodData = {
   mood: string
-  date: string
+  date: Date
 }
 
 export default function Home() {
@@ -18,20 +19,20 @@ export default function Home() {
   const [showModal, setShowModal] = useState(false)
   const router = useRouter()
   const scrollToRef = useRef<HTMLDivElement>(null)
-  const { moodStates, loading, error } = useMoodStates()
+  const { moodStates, createMoodState } = useMoodStates()
 
   useEffect(() => {
     if (moodStates.length > 0) {
       const updatedMoodList = moodStates.map((state) => ({
         mood: state.type.toLowerCase(),
-        date: state.createdAt
+        date: new Date(state.createdAt)
       }))
       setMoodList(updatedMoodList)
     }
   }, [moodStates])
 
   const updateMood = (newMood: string) => {
-    const date = new Date().toISOString()
+    const date = new Date()
     setMoodList((currentMood) => [...currentMood, { mood: newMood, date }])
     router.push(`/?mood=${newMood}`)
     setShowModal(false)
@@ -42,10 +43,12 @@ export default function Home() {
 
   return (
     <main>
+      <Toaster />
       <Modal
         showModal={showModal}
         updateMood={updateMood}
         closeModal={() => setShowModal(false)}
+        createMoodState={createMoodState}
       />
       <Mood />
       <Sidebar moodList={moodList} setShowModal={setShowModal}>

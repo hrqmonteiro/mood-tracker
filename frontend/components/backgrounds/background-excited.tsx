@@ -14,7 +14,6 @@ export default function BackgroundExcited({
         [styles['background--active']]: isActive
       })}
     >
-      {/*  */}
       <svg
         className={clsx(styles['background-gradient'])}
         viewBox='0 0 460 430'

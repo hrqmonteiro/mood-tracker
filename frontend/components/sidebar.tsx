@@ -1,42 +1,66 @@
-'use client'
+import { useState } from 'react'
+import { usePathname, useRouter } from 'next/navigation'
+import { format } from 'date-fns'
 
-import { useCallback } from 'react'
-import { usePathname, useRouter, useSearchParams } from 'next/navigation'
+import useQueryString from '@/hooks/useQueryString'
 
 import MoodPreview from './mood-preview'
 import styles from './sidebar.module.css'
 
-export default function Sidebar({ moodList = [], setShowModal, children }) {
+type MoodItem = {
+  mood: string
+  date: Date | string
+}
+
+type SidebarProps = {
+  moodList: MoodItem[]
+  setShowModal: React.Dispatch<React.SetStateAction<boolean>>
+  children?: React.ReactNode
+}
+
+export default function Sidebar({
+  moodList = [],
+  setShowModal,
+  children
+}: SidebarProps) {
   const router = useRouter()
-  const searchParams = useSearchParams()
   const pathname = usePathname()
 
-  const createQueryString = useCallback(
-    (name: string, value: string) => {
-      const params = new URLSearchParams(searchParams.toString())
-      params.set(name, value)
+  const [selectedMood, setSelectedMood] = useState<string | null>(null)
+  const { createQueryString } = useQueryString()
 
-      return params.toString()
-    },
-    [searchParams]
-  )
-
-  const updateSelectedMood = (newMood) => {
+  const updateSelectedMood = (newMood: string) => {
+    setSelectedMood(newMood)
     router.push(pathname + '?' + createQueryString('mood', newMood))
   }
+
+  const todayDate = format(new Date(), 'yyyy-MM-dd')
+
+  const defaultMoodPreview = (
+    <MoodPreview
+      key='default-mood-preview'
+      mood='notFound'
+      date={todayDate}
+      isSelected={false}
+      updateSelectedMood={() => {}}
+    />
+  )
 
   return (
     <div className={styles.sidebar} suppressHydrationWarning>
       <div className={styles['sidebar__list']}>
         <div className={styles.scrollable}>
-          {moodList.map(({ mood, date }, index) => (
-            <MoodPreview
-              key={`mood-preview-${date}-${mood}-${index}`}
-              mood={mood}
-              date={date}
-              updateSelectedMood={updateSelectedMood}
-            />
-          ))}
+          {moodList.length === 0
+            ? defaultMoodPreview
+            : moodList.map(({ mood, date }, index) => (
+                <MoodPreview
+                  key={`mood-preview-${date}-${mood}-${index}`}
+                  mood={mood}
+                  date={date}
+                  isSelected={mood === selectedMood}
+                  updateSelectedMood={updateSelectedMood}
+                />
+              ))}
           {children}
         </div>
       </div>

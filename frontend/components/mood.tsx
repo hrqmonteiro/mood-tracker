@@ -7,8 +7,8 @@ import useMoodStates from '@/hooks/useMoodStates'
 import BackgroundExcited from '@/components/backgrounds/background-excited'
 import BackgroundPleasant from '@/components/backgrounds/background-pleasant'
 import BackgroundSad from '@/components/backgrounds/background-sad'
-import Fallback from '@/components/fallback'
 
+import BackgroundFallback from './backgrounds/background-fallback'
 import styles from './mood.module.css'
 
 const moodsAvailable: Record<string, { title: string; message: string }> = {
@@ -26,6 +26,11 @@ const moodsAvailable: Record<string, { title: string; message: string }> = {
     title: 'You’re feeling sad',
     message:
       'Got the blues, huh? Remember, even clouds have silver linings. We’re here for you.'
+  },
+  notFound: {
+    title: 'No record found',
+    message:
+      'No record of Mood Trackings found. Choose your current mood on the sidebar and start!'
   }
 }
 
@@ -34,6 +39,7 @@ export default function Mood() {
   const mood = searchParams.get('mood') as string | null
   const [latestMoodState, setLatestMoodState] = useState<string | null>(null)
   const { moodStates, loading, error } = useMoodStates()
+  const userMood = mood || latestMoodState
 
   useEffect(() => {
     if (!loading && !error && moodStates.length > 0) {
@@ -42,36 +48,35 @@ export default function Mood() {
     }
   }, [moodStates, loading, error])
 
-  if (!mood && !latestMoodState) {
-    return <Fallback />
-  }
+  const showFallback = !mood && !latestMoodState
 
-  const userMood = mood || latestMoodState
-  const isValidMood = Object.keys(moodsAvailable).includes(userMood)
+  useEffect(() => {
+    if (showFallback) {
+      setLatestMoodState('notFound')
+    }
+  }, [moodStates, showFallback])
 
-  if (!isValidMood) {
-    return <Fallback />
-  }
-
-  const currentMood = moodsAvailable[userMood]
+  const currentMood = userMood ? moodsAvailable[userMood] : undefined
 
   return (
-    <div className={clsx(styles.mood, styles[userMood])}>
+    <div className={clsx(styles.mood, userMood && styles[userMood])}>
       <div className={styles.foreground}>
-        <div className={styles.content}>
-          <p className={styles.eyebrow}>Current Mood</p>
-          <p className={styles.title}>{currentMood.title}</p>
-          <p className={styles.message}>{currentMood.message}</p>
-        </div>
+        {userMood && (
+          <div className={styles.content}>
+            <p className={styles.eyebrow}>Current Mood</p>
+            <p className={styles.title}>{currentMood?.title}</p>
+            <p className={styles.message}>{currentMood?.message}</p>
+          </div>
+        )}
         <div className={styles.video}>
           <div className={styles['emoji-group']}>
             {Object.keys(moodsAvailable).map((moodKey) => (
               <Player
-                autoplay
-                loop
                 key={moodKey}
                 src={`/assets/animations/${moodKey}.json`}
                 style={{ height: '300px', width: '300px' }}
+                autoplay
+                loop
                 className={clsx(styles.emoji, {
                   [styles['emoji--active']]: moodKey === userMood
                 })}
@@ -84,6 +89,7 @@ export default function Mood() {
         <BackgroundPleasant isActive={userMood === 'pleasant'} />
         <BackgroundSad isActive={userMood === 'sad'} />
         <BackgroundExcited isActive={userMood === 'excited'} />
+        <BackgroundFallback isActive={userMood === 'notFound'} />
       </div>
     </div>
   )
