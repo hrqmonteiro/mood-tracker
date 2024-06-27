@@ -40,12 +40,12 @@ export default function Modal({
         pathname + '?' + createQueryString('mood', type.toLocaleLowerCase())
       )
 
-      toast.success('Mood state created successfully!', { id: loadingToastId })
+      toast.success('Mood logged successfully!', { id: loadingToastId })
 
       closeModal()
     } catch (error) {
-      toast.error('Failed to create mood state', { duration: 4000 })
-      console.error('Failed to create mood state', error)
+      toast.error('Failed to log mood.', { duration: 4000 })
+      console.error('Failed to log mood:', error)
     } finally {
       setLoading(false)
     }
