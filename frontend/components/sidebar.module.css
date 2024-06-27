@@ -1,0 +1,77 @@
+.sidebar {
+  @apply max-h-100vh relative z-10 flex flex-col overflow-hidden bg-lavender-100;
+}
+
+.sidebar__list {
+  @apply relative flex flex-1 flex-col overflow-scroll;
+}
+
+.sidebar__list:before,
+.sidebar__list:after {
+  content: '';
+
+  @apply pointer-events-none absolute left-0 right-0 z-50 h-28 select-none;
+}
+
+.sidebar__list:before {
+  @apply absolute top-0;
+
+  background: linear-gradient(
+    0deg,
+    rgba(2, 0, 36, 0) 0%,
+    var(--lavender-100) 75%
+  );
+}
+.sidebar__list:after {
+  @apply bottom-0;
+
+  background: linear-gradient(
+    0deg,
+    var(--lavender-100) 25%,
+    rgba(2, 0, 36, 0) 100%
+  );
+}
+
+.scrollable {
+  @apply flex-1 overflow-scroll;
+
+  padding: 3.5rem 1.5rem 10rem;
+}
+
+.sidebar__footer {
+  @apply p-6;
+}
+
+.sidebar__add_button {
+  @apply w-full cursor-pointer p-4;
+}
+
+.mood_preview {
+  @apply relative mb-2 flex w-80 w-full cursor-pointer items-center gap-4 rounded-3xl border-2 border-transparent bg-white p-6;
+}
+
+.mood_preview:hover,
+.mood_preview:focus {
+  @apply border-lavender-300;
+}
+
+.mood_content {
+  @apply flex flex-col gap-1;
+}
+
+.mood_name {
+  @apply text-left text-base font-semibold leading-4 tracking-tight text-midnight-400;
+}
+
+.mood_date {
+  @apply text-left text-xs text-midnight-300;
+}
+
+.sidebar__add_button {
+  @apply flex items-center justify-center gap-1 self-stretch rounded-3xl border-0 border-2 border-transparent bg-lavender-300 px-10 py-8 text-base uppercase leading-4 tracking-tighter text-white transition-all duration-300 ease-in-out;
+}
+
+.sidebar__add_button:hover,
+.sidebar__add_button:focus {
+  @apply border-lavender-300 bg-lavender-100 text-lavender-300;
+}

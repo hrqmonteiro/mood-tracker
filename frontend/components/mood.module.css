@@ -1,0 +1,74 @@
+.mood {
+  @apply rounded-tr-big rounded-br-big relative flex items-center justify-center overflow-hidden bg-white;
+
+  --eyebrow: var(--midnight-100);
+  --title: var(--white);
+  --message: var(--lavender-100);
+}
+
+.pleasant {
+  --eyebrow: #000;
+  --title: #000;
+  --message: #000;
+}
+
+.foreground {
+  @apply relative;
+
+  z-index: 100;
+}
+
+.content {
+  @apply mb-6 max-w-2xl p-8;
+}
+
+.eyebrow {
+  color: var(--eyebrow, #f5f6f4);
+
+  @apply mb-8 text-center text-sm font-semibold leading-4 tracking-widest transition-all duration-300 ease-in-out;
+}
+
+.title {
+  color: var(--title, #fff);
+
+  @apply mb-6 text-center text-5xl font-extrabold leading-8 tracking-tight transition-all duration-300 ease-in-out;
+}
+
+.message {
+  color: var(--message, #f1f5fe);
+
+  @apply text-1.5xl mx-auto my-0 max-w-lg text-center font-normal leading-8 tracking-tight transition-all duration-300 ease-in-out;
+}
+
+.video {
+  @apply flex items-center justify-center;
+}
+
+.emoji-group {
+  @apply w-300px h-300px relative;
+}
+
+.emoji {
+  @apply absolute z-10 opacity-0 transition-all duration-300;
+}
+
+.emoji--active {
+  @apply z-50 opacity-100 transition-all duration-300 ease-in-out;
+}
+
+.background {
+  position: relative;
+  z-index: 50;
+  background-color: blue;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  max-height: 100vh;
+  overflow: hidden;
+}
+
+.background__pleasant {
+  @apply h-auto w-full;
+}
