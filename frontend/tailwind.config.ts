@@ -37,6 +37,10 @@ export default {
       },
       transitionDuration: {
         '2000': '2000ms'
+      },
+      zIndex: {
+        70: '70',
+        100: '100'
       }
     }
   },
